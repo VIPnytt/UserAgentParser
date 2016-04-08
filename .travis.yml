@@ -1,0 +1,14 @@
+sudo: false
+language: php
+php:
+  - 7.0
+  - 5.6
+  - 5.5
+  - 5.4
+  - hhvm
+before_install:
+  - composer selfupdate
+install:
+  - composer install
+after_script:
+  - CODECLIMATE_REPO_TOKEN=33dec833c8c38b66895abeedd80633f19ad8e08bacf3a2421d1fef5b36ef207f ./vendor/bin/test-reporter
