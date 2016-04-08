@@ -1,6 +1,8 @@
 <?php
 namespace vipnytt;
 
+use Exception;
+
 /**
  * Class UserAgentParser
  *
@@ -15,9 +17,15 @@ class UserAgentParser
      * Constructor
      *
      * @param string $userAgent
+     * @throws Exception
      */
     public function __construct($userAgent)
     {
+        if (!extension_loaded('mbstring')) {
+            throw new Exception('The extension `mbstring` must be installed and loaded for this library');
+        }
+        mb_detect_encoding($userAgent);
+
         $this->userAgent = mb_strtolower(trim($userAgent));
         $this->explode();
     }
@@ -31,9 +39,9 @@ class UserAgentParser
     {
         $this->groups = [$this->userAgent];
         $this->groups[] = $this->stripVersion();
-        while (strpos(end($this->groups), '-') !== false) {
+        while (mb_strpos(end($this->groups), '-') !== false) {
             $current = end($this->groups);
-            $this->groups[] = substr($current, 0, strrpos($current, '-'));
+            $this->groups[] = mb_substr($current, 0, mb_strrpos($current, '-'));
         }
         $this->groups = array_unique($this->groups);
     }
@@ -45,8 +53,8 @@ class UserAgentParser
      */
     public function stripVersion()
     {
-        if (strpos($this->userAgent, '/') !== false) {
-            return explode('/', $this->userAgent, 2)[0];
+        if (mb_strpos($this->userAgent, '/') !== false) {
+            return mb_split('/', $this->userAgent, 2)[0];
         }
         return $this->userAgent;
     }
@@ -62,7 +70,7 @@ class UserAgentParser
     public function match($array, $fallback = null)
     {
         foreach ($this->groups as $userAgent) {
-            if (in_array($userAgent, array_map('strtolower', $array))) {
+            if (in_array($userAgent, array_map('mb_strtolower', $array))) {
                 return $userAgent;
             }
         }

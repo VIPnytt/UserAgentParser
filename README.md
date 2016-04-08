@@ -6,8 +6,8 @@
 [![Packagist](https://img.shields.io/packagist/v/vipnytt/useragentparser.svg)](https://packagist.org/packages/vipnytt/useragentparser)
 [![Chat](https://badges.gitter.im/VIPnytt/UserAgentParser.svg)](https://gitter.im/VIPnytt/UserAgentParser)
 
-# User-Agent string parser class
-PHP class to parse User-Agent strings.
+# User-Agent string parser
+PHP class to parse User-Agent strings sent by web-crawlers.
 
 [![SensioLabsInsight](https://insight.sensiolabs.com/projects/1386c14c-546c-4c42-ac55-91ea3a3a1ae1/big.png)](https://insight.sensiolabs.com/projects/1386c14c-546c-4c42-ac55-91ea3a3a1ae1)
 
@@ -27,10 +27,12 @@ Then run `composer update`.
 - Find different groups the User-Agent belongs to.
 - Determine the correct group of records by finding the group with the most specific user-agent that still matches.
 
-## When do I need it?
+### When do I need it?
 - Parsing of `robots.txt`, the rules for robots online.
 - Parsing of the _X-Robots-Tag_ HTTP-header.
 - Parsing of _Robots meta tags_ in HTML documents
+
+Note: _The library is not compatible with User-Agent strings sent by eg. web-browsers. Contributions are of course welcome._
 
 
 ## Getting Started
