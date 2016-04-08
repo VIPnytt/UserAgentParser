@@ -37,6 +37,10 @@ class VersionTest extends \PHPUnit_Framework_TestCase
             [
                 'bingbot/2.0',
                 'bingbot',
+            ],
+            [
+                'mybot',
+                'mybot',
             ]
         ];
     }
