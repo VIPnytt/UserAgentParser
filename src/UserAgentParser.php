@@ -21,11 +21,7 @@ class UserAgentParser
      */
     public function __construct($userAgent)
     {
-        if (!extension_loaded('mbstring')) {
-            throw new Exception('The extension `mbstring` must be installed and loaded for this library');
-        }
         mb_detect_encoding($userAgent);
-
         $this->userAgent = mb_strtolower(trim($userAgent));
         $this->explode();
     }
@@ -61,20 +57,19 @@ class UserAgentParser
 
     /**
      * Find matching User-Agent
-     * Selects the best matching from an array, or $fallback if none matches
+     * Selects the best matching from an array, or false if none matches
      *
      * @param array $array
-     * @param string|null $fallback
      * @return string|false
      */
-    public function match($array, $fallback = null)
+    public function match($array)
     {
         foreach ($this->groups as $userAgent) {
             if (in_array($userAgent, array_map('mb_strtolower', $array))) {
                 return $userAgent;
             }
         }
-        return isset($fallback) ? $fallback : false;
+        return false;
     }
 
     /**

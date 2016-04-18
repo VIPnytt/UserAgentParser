@@ -46,7 +46,7 @@ var_dump($parser->stripVersion());
 /* googlebot */
 ```
 
-### Find different groups the User-Agent belongs to.
+### Find different groups the User-Agent belongs to
 ```php
 use vipnytt\UserAgentParser;
 
@@ -60,11 +60,11 @@ var_dump($parser->export());
 ```
 
 ### Determine the correct group
-Determine the correct group of records by finding the group with the most specific user-agent that still matches.
+Determine the correct group of records by finding the group with the most specific user-agent that still matches
 ```php
 use vipnytt\UserAgentParser;
 
 $parser = new UserAgentParser('googlebot-news');
-var_dump($parser->match(['googlebot/2.1', 'googlebot-images','googlebot']));
+var_dump($parser->match(['googlebot/2.1', 'googlebot-images', 'googlebot']));
 /* googlebot */
 ```
