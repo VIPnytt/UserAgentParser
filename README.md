@@ -11,12 +11,16 @@ Parser and group determiner optimalized for ``robots.txt``, ``X-Robots-tag`` and
 
 [![SensioLabsInsight](https://insight.sensiolabs.com/projects/1386c14c-546c-4c42-ac55-91ea3a3a1ae1/big.png)](https://insight.sensiolabs.com/projects/1386c14c-546c-4c42-ac55-91ea3a3a1ae1)
 
+#### Requirements:
+- PHP [5.6+](http://php.net/supported-versions.php)
+- PHP [mbstring](http://php.net/manual/en/book.mbstring.php) extension
+
 ## Installation
 The library is available for install via [Composer](https://getcomposer.org). Just add this to your `composer.json` file:
 ```json
 {
     "require": {
-        "vipnytt/useragentparser": "0.2.*"
+        "vipnytt/useragentparser": "~0.2"
     }
 }
 ```
