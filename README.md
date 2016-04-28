@@ -6,8 +6,8 @@
 [![Packagist](https://img.shields.io/packagist/v/vipnytt/useragentparser.svg)](https://packagist.org/packages/vipnytt/useragentparser)
 [![Chat](https://badges.gitter.im/VIPnytt/UserAgentParser.svg)](https://gitter.im/VIPnytt/UserAgentParser)
 
-# User-Agent string parser
-PHP class to parse User-Agent strings sent by web-crawlers.
+# User-Agent parser for robot rule sets
+Parser and group determiner optimalized for ``robots.txt``, ``X-Robots-tag`` and ``Robots-meta-tag`` usage cases.
 
 [![SensioLabsInsight](https://insight.sensiolabs.com/projects/1386c14c-546c-4c42-ac55-91ea3a3a1ae1/big.png)](https://insight.sensiolabs.com/projects/1386c14c-546c-4c42-ac55-91ea3a3a1ae1)
 
@@ -23,16 +23,17 @@ The library is available for install via [Composer](https://getcomposer.org). Ju
 Then run `composer update`.
 
 ## Features
-- Strip the version tag.
-- Find different groups the User-Agent belongs to.
-- Determine the correct group of records by finding the group with the most specific user-agent that still matches.
+- Stripping of the version tag.
+- List any _rule groups_ the User-Agent belongs to.
+- Determine the correct group of records by finding the group with the most specific User-agent that still matches.
 
-### When do I need it?
-- Parsing of `robots.txt`, the rules for robots online.
-- Parsing of the _X-Robots-Tag_ HTTP-header.
-- Parsing of _Robots meta tags_ in HTML documents
+### When to use it?
+- When parsing `robots.txt` rule sets, for robots online.
+- When parsing the ``X-Robots-Tag`` HTTP-header.
+- When parsing ``Robots meta tags`` in HTML documents
 
-Note: _The library is not compatible with User-Agent strings sent by eg. web-browsers. Contributions are of course welcome._
+Note: _Full User-agent strings, like them sent by eg. web-browsers, or found in your log files, are not compatible, this is by design._
+Supported User-agent string formats are ``UserAgentName/version`` with or without the version tag. Eg. ``MyWebCrawler/2.0`` or just ``MyWebCrawler``.
 
 
 ## Getting Started
@@ -46,7 +47,7 @@ var_dump($parser->stripVersion());
 /* googlebot */
 ```
 
-### Find different groups the User-Agent belongs to
+### List different groups the User-agent belongs to
 ```php
 use vipnytt\UserAgentParser;
 
@@ -60,7 +61,7 @@ var_dump($parser->export());
 ```
 
 ### Determine the correct group
-Determine the correct group of records by finding the group with the most specific user-agent that still matches
+Determine the correct group of records by finding the group with the most specific User-agent that still matches your rule sets
 ```php
 use vipnytt\UserAgentParser;
 

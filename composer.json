@@ -1,6 +1,7 @@
 {
   "name": "vipnytt/useragentparser",
-  "description": "User-Agent string parser class",
+  "description": "User-Agent string parser",
+  "type": "library",
   "keywords": [
     "UserAgent",
     "User-Agent",
@@ -10,13 +11,22 @@
     "Robots-meta-tag",
     "Robot",
     "Spider",
-    "Web-Crawler"
+    "Crawler"
   ],
   "homepage": "https://github.com/VIPnytt/UserAgentParser",
-  "type": "library",
   "license": "MIT",
-  "minimum-stability": "dev",
-  "prefer-stable": true,
+  "authors": [
+    {
+      "name": "VIP nytt",
+      "email": "vipnytt@gmail.com",
+      "role": "Creator"
+    },
+    {
+      "name": "Jan-Petter Gundersen",
+      "email": "europe.jpg@gmail.com",
+      "role": "Developer"
+    }
+  ],
   "require": {
     "php": ">=5.4.0",
     "ext-mbstring": "*"
@@ -25,18 +35,13 @@
     "phpunit/phpunit": ">=4.0",
     "codeclimate/php-test-reporter": ">=0.2.0"
   },
-  "authors": [
-    {
-      "name": "VIP nytt",
-      "email": "vipnytt@gmail.com",
-      "role": "creator"
-    },
-    {
-      "name": "Jan-Petter Gundersen",
-      "email": "europe.jpg@gmail.com",
-      "role": "developer"
-    }
-  ],
+  "support": {
+    "email": "vipnytt@gmail.com",
+    "issues": "https://github.com/VIPnytt/UserAgentParser/issues",
+    "wiki": "https://github.com/VIPnytt/UserAgentParser/wiki",
+    "source": "https://github.com/VIPnytt/UserAgentParser",
+    "docs": "https://github.com/VIPnytt/UserAgentParser/wiki"
+  },
   "autoload": {
     "psr-4": {
       "vipnytt\\": "src/"

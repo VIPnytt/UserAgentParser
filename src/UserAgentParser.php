@@ -1,7 +1,7 @@
 <?php
 namespace vipnytt;
 
-use Exception;
+use vipnytt\UserAgentParser\Exceptions\FormatException;
 
 /**
  * Class UserAgentParser
@@ -17,13 +17,25 @@ class UserAgentParser
      * Constructor
      *
      * @param string $userAgent
-     * @throws Exception
      */
     public function __construct($userAgent)
     {
         mb_detect_encoding($userAgent);
-        $this->userAgent = mb_strtolower(trim($userAgent));
+        $this->userAgent = trim($userAgent);
+        $this->checkFormat();
         $this->explode();
+    }
+
+    /**
+     * Validate the UserAgent format
+     *
+     * @throws FormatException
+     */
+    protected function checkFormat()
+    {
+        if (preg_match('/\s/', $this->userAgent)) {
+            throw new FormatException("Format not supported. Please use `name/version` or just `name`, eg. `MyUserAgent/1.0` and `MyUserAgent`.");
+        }
     }
 
     /**
@@ -33,13 +45,18 @@ class UserAgentParser
      */
     private function explode()
     {
-        $this->groups = [$this->userAgent];
-        $this->groups[] = $this->stripVersion();
-        while (mb_strpos(end($this->groups), '-') !== false) {
-            $current = end($this->groups);
-            $this->groups[] = mb_substr($current, 0, mb_strrpos($current, '-'));
+        $groups = [$this->userAgent];
+
+        $groups[] = $this->stripVersion();
+        while (mb_stripos(end($groups), '-') !== false) {
+            $current = end($groups);
+            $groups[] = mb_substr($current, 0, mb_strripos($current, '-'));
         }
-        $this->groups = array_unique($this->groups);
+        foreach ($groups as $group) {
+            if (!in_array($group, $this->groups)) {
+                $this->groups[] = $group;
+            }
+        }
     }
 
     /**
@@ -49,7 +66,7 @@ class UserAgentParser
      */
     public function stripVersion()
     {
-        if (mb_strpos($this->userAgent, '/') !== false) {
+        if (mb_stripos($this->userAgent, '/') !== false) {
             return mb_split('/', $this->userAgent, 2)[0];
         }
         return $this->userAgent;
@@ -64,8 +81,9 @@ class UserAgentParser
      */
     public function match($array)
     {
+        $array = array_map('mb_strtolower', $array);
         foreach ($this->groups as $userAgent) {
-            if (in_array($userAgent, array_map('mb_strtolower', $array))) {
+            if (in_array(mb_strtolower($userAgent), $array)) {
                 return $userAgent;
             }
         }
