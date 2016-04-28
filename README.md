@@ -16,7 +16,7 @@ The library is available for install via [Composer](https://getcomposer.org). Ju
 ```json
 {
     "require": {
-        "vipnytt/useragentparser": "0.1.*"
+        "vipnytt/useragentparser": "0.2.*"
     }
 }
 ```
