@@ -96,15 +96,13 @@ class UserAgentParser
      */
     private function blacklistCheck($input)
     {
-        foreach (
-            [
-                'mozilla',
-                'compatible',
-                '(',
-                ')',
-                ' ',
-            ] as $string
-        ) {
+        foreach ([
+                     'mozilla',
+                     'compatible',
+                     '(',
+                     ')',
+                     ' ',
+                 ] as $string) {
             if (stripos($input, $string) !== false) {
                 throw new FormatException('Invalid User-agent format (`' . trim($this->product . '/' . $this->version, '/') . '`). Examples of valid User-agents: `MyCustomBot`, `MyFetcher-news`, `MyCrawler/2.1` and `MyBot-images/1.2`. See also ' . self::RFC_README);
             }

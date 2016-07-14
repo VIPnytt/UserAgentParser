@@ -62,6 +62,14 @@ class MatchTest extends \PHPUnit_Framework_TestCase
                 ]
             ],
             [
+                'h3lloBot/2.1',
+                'h3lloBot/2',
+                [
+                    'h3lloBot',
+                    'h3lloBot/2',
+                ]
+            ],
+            [
                 'googlebot',
                 false,
                 [
@@ -77,7 +85,7 @@ class MatchTest extends \PHPUnit_Framework_TestCase
                     'UPPERCASE-lowercase',
                     'UPPERCASE-lowercase/1.0',
                 ]
-            ]
+            ],
         ];
     }
 }
