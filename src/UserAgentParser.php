@@ -50,7 +50,6 @@ class UserAgentParser
         if (strpos($this->product, '/') !== false) {
             $this->split();
         }
-        $this->blacklistCheck();
         $this->validateProduct();
         $this->validateVersion();
     }
@@ -70,26 +69,6 @@ class UserAgentParser
     }
 
     /**
-     * @throws ProductException
-     */
-    private function blacklistCheck()
-    {
-        foreach (
-            [
-                'mozilla',
-                'compatible',
-                '(',
-                ')',
-                ' ',
-            ] as $string
-        ) {
-            if (stripos($this->product, $string) !== false) {
-                throw new FormatException('Invalid User-agent format (`' . trim($this->product . '/' . $this->version, '/') . '`). Examples of valid User-agents: `MyCustomBot`, `MyFetcher-news`, `MyCrawler/2.1` and `MyBot-images/1.2`. See also ' . self::RFC_README);
-            }
-        }
-    }
-
-    /**
      * Validate the Product format
      * @link https://tools.ietf.org/html/rfc7230#section-3.2.4
      *
@@ -98,6 +77,7 @@ class UserAgentParser
      */
     private function validateProduct()
     {
+        $this->blacklistCheck($this->product);
         $old = $this->product;
         if ($old !== ($this->product = preg_replace(self::PREG_PATTERN, '', $this->product))) {
             trigger_error("Product name contains invalid characters. Truncated to `$this->product`.", E_USER_WARNING);
@@ -109,6 +89,29 @@ class UserAgentParser
     }
 
     /**
+     * Check for blacklisted strings or characters
+     *
+     * @param int|string|null $input
+     * @throws FormatException
+     */
+    private function blacklistCheck($input)
+    {
+        foreach (
+            [
+                'mozilla',
+                'compatible',
+                '(',
+                ')',
+                ' ',
+            ] as $string
+        ) {
+            if (stripos($input, $string) !== false) {
+                throw new FormatException('Invalid User-agent format (`' . trim($this->product . '/' . $this->version, '/') . '`). Examples of valid User-agents: `MyCustomBot`, `MyFetcher-news`, `MyCrawler/2.1` and `MyBot-images/1.2`. See also ' . self::RFC_README);
+            }
+        }
+    }
+
+    /**
      * Validate the Version and it's format
      *
      * @return bool
@@ -116,10 +119,10 @@ class UserAgentParser
      */
     private function validateVersion()
     {
+        $this->blacklistCheck($this->version);
         if (
-            $this->version !== null &&
+            !empty($this->version) &&
             (
-                empty($this->version) ||
                 preg_match('/[^0-9.]/', $this->version) ||
                 version_compare($this->version, '0.0.1', '>=') === false
             )
@@ -203,8 +206,9 @@ class UserAgentParser
     public function getVersions()
     {
         while (
-            substr_count($this->version, '.'
-            ) < 2) {
+            !empty($this->version) &&
+            substr_count($this->version, '.') < 2
+        ) {
             $this->version .= '.0';
         }
         // Remove part by part of the version.

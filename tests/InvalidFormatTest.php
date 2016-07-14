@@ -54,10 +54,6 @@ class InvalidFormatTest extends \PHPUnit_Framework_TestCase
                 '2.1-alpha',
             ],
             [
-                'mycrawler',
-                '',
-            ],
-            [
                 '',
                 '2.0',
             ],
