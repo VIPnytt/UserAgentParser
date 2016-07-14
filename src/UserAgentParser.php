@@ -24,7 +24,7 @@ class UserAgentParser
 
     /**
      * Version
-     * @var string
+     * @var int|string|null
      */
     private $version;
 
