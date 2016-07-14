@@ -1,6 +1,6 @@
 {
   "name": "vipnytt/useragentparser",
-  "description": "User-Agent string parser",
+  "description": "User-Agent parser for robot rule sets",
   "type": "library",
   "keywords": [
     "UserAgent",
@@ -28,8 +28,7 @@
     }
   ],
   "require": {
-    "php": ">=5.6.0",
-    "ext-mbstring": "*"
+    "php": ">=5.6.0"
   },
   "require-dev": {
     "phpunit/phpunit": ">=4.0",

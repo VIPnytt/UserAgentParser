@@ -7,24 +7,23 @@
 [![Chat](https://badges.gitter.im/VIPnytt/UserAgentParser.svg)](https://gitter.im/VIPnytt/UserAgentParser)
 
 # User-Agent parser for robot rule sets
-Parser and group determiner optimalized for ``robots.txt``, ``X-Robots-tag`` and ``Robots-meta-tag`` usage cases.
+Parser and group determiner optimized for ``robots.txt``, ``X-Robots-tag`` and ``Robots-meta-tag`` usage cases.
 
 [![SensioLabsInsight](https://insight.sensiolabs.com/projects/1386c14c-546c-4c42-ac55-91ea3a3a1ae1/big.png)](https://insight.sensiolabs.com/projects/1386c14c-546c-4c42-ac55-91ea3a3a1ae1)
 
 #### Requirements:
 - PHP [5.6+](http://php.net/supported-versions.php)
-- PHP [mbstring](http://php.net/manual/en/book.mbstring.php) extension
 
 ## Installation
 The library is available for install via [Composer](https://getcomposer.org). Just add this to your `composer.json` file:
 ```json
 {
     "require": {
-        "vipnytt/useragentparser": "~0.2"
+        "vipnytt/useragentparser": "~1.0"
     }
 }
 ```
-Then run `composer update`.
+Then run `php composer update`.
 
 ## Features
 - Stripping of the version tag.
@@ -33,10 +32,10 @@ Then run `composer update`.
 
 ### When to use it?
 - When parsing `robots.txt` rule sets, for robots online.
-- When parsing the ``X-Robots-Tag`` HTTP-header.
-- When parsing ``Robots meta tags`` in HTML documents
+- When parsing the ``X-Robots-Tag`` HTTP header.
+- When parsing ``Robots meta tags`` in HTML / XHTML documents.
 
-Note: _Full User-agent strings, like them sent by eg. web-browsers, or found in your log files, are not compatible, this is by design._
+Note: _Full User-agent strings, like them sent by eg. web-browsers, is not compatible, this is by design._
 Supported User-agent string formats are ``UserAgentName/version`` with or without the version tag. Eg. ``MyWebCrawler/2.0`` or just ``MyWebCrawler``.
 
 
@@ -47,8 +46,7 @@ Supported User-agent string formats are ``UserAgentName/version`` with or withou
 use vipnytt\UserAgentParser;
 
 $parser = new UserAgentParser('googlebot/2.1');
-var_dump($parser->stripVersion());
-/* googlebot */
+$product = $parser->getProduct()); // googlebot
 ```
 
 ### List different groups the User-agent belongs to
@@ -56,20 +54,47 @@ var_dump($parser->stripVersion());
 use vipnytt\UserAgentParser;
 
 $parser = new UserAgentParser('googlebot-news/2.1');
-var_dump($parser->export());
-/*
- * googlebot-news/2.1
- * googlebot-news
- * googlebot
- */
+$userAgents = $parser->getUserAgents());
+
+array(
+    'googlebot-news/2.1',
+    'googlebot-news/2',
+    'googlebot-news',
+    'googlebotnews',
+    'googlebot'
+);
 ```
 
 ### Determine the correct group
-Determine the correct group of records by finding the group with the most specific User-agent that still matches your rule sets
+Determine the correct group of records by finding the group with the most specific User-agent that still matches your rule sets.
 ```php
 use vipnytt\UserAgentParser;
 
 $parser = new UserAgentParser('googlebot-news');
-var_dump($parser->match(['googlebot/2.1', 'googlebot-images', 'googlebot']));
-/* googlebot */
+$match = $parser->getMostSpecific(['googlebot/2.1', 'googlebot-images', 'googlebot'])); // googlebot
 ```
+
+### Cheat sheet
+```php
+$parser = new UserAgentParser('MyCustomCrawler/1.2');
+
+// Determine the correct rule set (robots.txt / robots meta tag / x-robots-tag)
+$parser->getMostSpecific($array); // string
+
+// Parse
+$parser->getUserAgent(); // string 'MyCustomCrawler/1.2'
+$parser->getProduct(); // string 'MyCustomCrawler'
+$parser->getVersion(); // string '1.2'
+
+// Crunch the data into groups, from most to less specific
+$parser->getUserAgents(); // array
+$parser->getProducts(); // array
+$parser->getVersions(); // array
+```
+
+## Specifications
+- [x] [Google Robots.txt specifications](https://developers.google.com/webmasters/control-crawl-index/docs/robots_txt)
+- [x] [Google Robots meta tag and X-Robots-Tag HTTP header specifications](https://developers.google.com/webmasters/control-crawl-index/docs/robots_meta_tag)
+- [x] [Yandex robots.txt specifications](https://yandex.com/support/webmaster/controlling-robot/robots-txt.xml)
+- [x] [RFC 7231](https://tools.ietf.org/html/rfc7231), [~~2616~~](https://tools.ietf.org/html/rfc2616)
+- [x] [RFC 7230](https://tools.ietf.org/html/rfc7230), [~~2616~~](https://tools.ietf.org/html/rfc2616)
