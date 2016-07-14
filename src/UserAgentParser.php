@@ -1,6 +1,7 @@
 <?php
 namespace vipnytt;
 
+use vipnytt\UserAgentParser\Exceptions\FormatException;
 use vipnytt\UserAgentParser\Exceptions\ProductException;
 use vipnytt\UserAgentParser\Exceptions\VersionException;
 
@@ -14,7 +15,15 @@ use vipnytt\UserAgentParser\Exceptions\VersionException;
  */
 class UserAgentParser
 {
+    /**
+     * RFC 7231 - Section 5.5.3 - User-agent
+     */
     const RFC_README = 'https://tools.ietf.org/html/rfc7231#section-5.5.3';
+
+    /**
+     * PREG pattern for valid characters
+     */
+    const PREG_PATTERN = '/[^\x21-\x7E]/';
 
     /**
      * Product
@@ -41,25 +50,29 @@ class UserAgentParser
         if (strpos($this->product, '/') !== false) {
             $this->split();
         }
+        $this->blacklistCheck();
         $this->validateProduct();
         $this->validateVersion();
     }
 
+    /**
+     * Split Product and Version
+     *
+     * @return bool
+     */
     private function split()
     {
         if (count($parts = explode('/', trim($this->product . '/' . $this->version, '/'), 2)) === 2) {
             $this->product = $parts[0];
             $this->version = $parts[1];
         }
+        return true;
     }
 
     /**
-     * Validate the Product format
-     * @link https://tools.ietf.org/html/rfc7230#section-3.2.4
-     *
      * @throws ProductException
      */
-    private function validateProduct()
+    private function blacklistCheck()
     {
         foreach (
             [
@@ -68,23 +81,37 @@ class UserAgentParser
                 '(',
                 ')',
                 ' ',
-            ] as $blacklisted
+            ] as $string
         ) {
-            if (
-                stripos($this->product, $blacklisted) !== false ||
-                empty($this->product)
-            ) {
-                throw new ProductException('Invalid product format (`' . $this->product . '`). Examples of valid User-agents: `MyCustomBot`, `MyFetcher-news`, `MyCrawler/2.1` and `MyBot-images/1.2`. See also ' . self::RFC_README);
+            if (stripos($this->product, $string) !== false) {
+                throw new FormatException('Invalid User-agent format (`' . trim($this->product . '/' . $this->version, '/') . '`). Examples of valid User-agents: `MyCustomBot`, `MyFetcher-news`, `MyCrawler/2.1` and `MyBot-images/1.2`. See also ' . self::RFC_README);
             }
         }
-        if ($this->product !== ($new = preg_replace('/[^\x21-\x7E]/', '', $this->product))) {
-            trigger_error("Product name contains invalid characters. Truncated to `$new`.", E_USER_WARNING);
+    }
+
+    /**
+     * Validate the Product format
+     * @link https://tools.ietf.org/html/rfc7230#section-3.2.4
+     *
+     * @return bool
+     * @throws ProductException
+     */
+    private function validateProduct()
+    {
+        $old = $this->product;
+        if ($old !== ($this->product = preg_replace(self::PREG_PATTERN, '', $this->product))) {
+            trigger_error("Product name contains invalid characters. Truncated to `$this->product`.", E_USER_WARNING);
         }
+        if (empty($this->product)) {
+            throw new ProductException('Product string cannot be empty.');
+        }
+        return true;
     }
 
     /**
      * Validate the Version and it's format
      *
+     * @return bool
      * @throws VersionException
      */
     private function validateVersion()
@@ -99,6 +126,38 @@ class UserAgentParser
         ) {
             throw new VersionException('Invalid version format (`' . $this->version . '`). See http://semver.org/ for guidelines. In addition, dev/alpha/beta/rc tags is disallowed. See also ' . self::RFC_README);
         }
+        $this->version = trim($this->version, '.0');
+        return true;
+    }
+
+    /**
+     * Get User-agent
+     *
+     * @return string
+     */
+    public function getUserAgent()
+    {
+        return trim($this->getProduct() . '/' . $this->getVersion(), '/');
+    }
+
+    /**
+     * Get product
+     *
+     * @return string
+     */
+    public function getProduct()
+    {
+        return $this->product;
+    }
+
+    /**
+     * Get version
+     *
+     * @return string|null
+     */
+    public function getVersion()
+    {
+        return empty($this->version) ? null : $this->version;
     }
 
     /**
@@ -112,7 +171,7 @@ class UserAgentParser
         $array = [];
         foreach ($userAgents as $string) {
             // Strip non-US-ASCII characters
-            $array[$string] = strtolower(preg_replace('/[^\x21-\x7E]/', '', $string));
+            $array[$string] = strtolower(preg_replace(self::PREG_PATTERN, '', $string));
         }
         foreach (array_map('strtolower', $this->getUserAgents()) as $generated) {
             if (($result = array_search($generated, $array)) !== false) {
@@ -143,7 +202,9 @@ class UserAgentParser
      */
     public function getVersions()
     {
-        while (substr_count($this->version, '.') < 2) {
+        while (
+            substr_count($this->version, '.'
+            ) < 2) {
             $this->version .= '.0';
         }
         // Remove part by part of the version.
@@ -155,7 +216,7 @@ class UserAgentParser
         usort($result, function ($a, $b) {
             return strlen($b) - strlen($a);
         });
-        return $this->filter($result);
+        return $this->filterDuplicates($result);
     }
 
     /**
@@ -180,7 +241,7 @@ class UserAgentParser
      * @param string[] $array
      * @return array
      */
-    private function filter($array)
+    private function filterDuplicates($array)
     {
         $result = [];
         foreach ($array as $value) {
@@ -205,39 +266,6 @@ class UserAgentParser
             ],
             $this->explode($this->product, '-')
         );
-        return $this->filter($result);
-    }
-
-    /**
-     * Get User-agent
-     *
-     * @return string
-     */
-    public function getUserAgent()
-    {
-        return $this->getVersion() === null ? $this->getProduct() : $this->getProduct() . '/' . $this->getVersion();
-    }
-
-    /**
-     * Get version
-     *
-     * @return string
-     */
-    public function getVersion()
-    {
-        if (empty($this->version)) {
-            return null;
-        }
-        return trim($this->version, '.0');
-    }
-
-    /**
-     * Get product
-     *
-     * @return string
-     */
-    public function getProduct()
-    {
-        return $this->product;
+        return $this->filterDuplicates($result);
     }
 }
