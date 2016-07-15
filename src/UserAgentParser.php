@@ -8,7 +8,7 @@ use vipnytt\UserAgentParser\Exceptions\VersionException;
 /**
  * Class UserAgentParser
  *
- * @link https://tools.ietf.org/html/rfc7231#section-5.5.3
+ * @link https://tools.ietf.org/html/rfc7231
  * @link https://tools.ietf.org/html/rfc7230
  *
  * @package vipnytt
@@ -38,7 +38,7 @@ class UserAgentParser
     private $version;
 
     /**
-     * Constructor
+     * UserAgentParser constructor
      *
      * @param string $product
      * @param int|string|null $version
@@ -70,6 +70,7 @@ class UserAgentParser
 
     /**
      * Validate the Product format
+     * @link https://tools.ietf.org/html/rfc7231#section-5.5.3
      * @link https://tools.ietf.org/html/rfc7230#section-3.2.4
      *
      * @return bool
@@ -92,6 +93,7 @@ class UserAgentParser
      * Check for blacklisted strings or characters
      *
      * @param int|string|null $input
+     * @return bool
      * @throws FormatException
      */
     private function blacklistCheck($input)
@@ -107,10 +109,12 @@ class UserAgentParser
                 throw new FormatException('Invalid User-agent format (`' . trim($this->product . '/' . $this->version, '/') . '`). Examples of valid User-agents: `MyCustomBot`, `MyFetcher-news`, `MyCrawler/2.1` and `MyBot-images/1.2`. See also ' . self::RFC_README);
             }
         }
+        return true;
     }
 
     /**
      * Validate the Version and it's format
+     * @link https://tools.ietf.org/html/rfc7231#section-5.5.3
      *
      * @return bool
      * @throws VersionException
@@ -125,7 +129,7 @@ class UserAgentParser
                 version_compare($this->version, '0.0.1', '>=') === false
             )
         ) {
-            throw new VersionException('Invalid version format (`' . $this->version . '`). See http://semver.org/ for guidelines. In addition, dev/alpha/beta/rc tags is disallowed. See also ' . self::RFC_README);
+            throw new VersionException("Invalid version format (` $this->version `). See http://semver.org/ for guidelines. In addition, dev/alpha/beta/rc tags is disallowed. See also " . self::RFC_README);
         }
         $this->version = trim($this->version, '.0');
         return true;
