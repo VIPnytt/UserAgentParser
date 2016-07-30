@@ -12,7 +12,7 @@ Parser and group determiner optimized for ``robots.txt``, ``X-Robots-tag`` and `
 [![SensioLabsInsight](https://insight.sensiolabs.com/projects/1386c14c-546c-4c42-ac55-91ea3a3a1ae1/big.png)](https://insight.sensiolabs.com/projects/1386c14c-546c-4c42-ac55-91ea3a3a1ae1)
 
 #### Requirements:
-- PHP [5.6+](http://php.net/supported-versions.php)
+- PHP [5.5+](http://php.net/supported-versions.php)
 
 ## Installation
 The library is available for install via [Composer](https://getcomposer.org). Just add this to your `composer.json` file:
