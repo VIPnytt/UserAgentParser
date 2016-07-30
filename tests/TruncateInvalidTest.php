@@ -18,16 +18,13 @@ use vipnytt\UserAgentParser;
 class TruncateInvalidTest extends \PHPUnit_Framework_TestCase
 {
     /**
+     * @requires PHPUnit 5.2
      * @dataProvider generateDataForTest
      * @param string $product
      * @param int|string|null $version
      */
     public function testTruncateInvalid($product, $version)
     {
-        if (PHP_VERSION_ID < 50600) {
-            $this->markTestSkipped();
-            return;
-        }
         $this->expectException(\PHPUnit_Framework_Error_Warning::class);
         new UserAgentParser($product, $version);
     }

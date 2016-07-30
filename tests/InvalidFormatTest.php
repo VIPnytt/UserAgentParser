@@ -9,7 +9,6 @@
 namespace vipnytt\UserAgentParser\Tests;
 
 use vipnytt\UserAgentParser;
-use vipnytt\UserAgentParser\Exceptions\FormatException;
 
 /**
  * Class InvalidFormatTest
@@ -19,17 +18,14 @@ use vipnytt\UserAgentParser\Exceptions\FormatException;
 class InvalidFormatTest extends \PHPUnit_Framework_TestCase
 {
     /**
+     * @requires PHPUnit 5.2
      * @dataProvider generateDataForTest
      * @param string $product
      * @param int|string|null $version
      */
     public function testInvalidFormat($product, $version)
     {
-        if (PHP_VERSION_ID < 50600) {
-            $this->markTestSkipped();
-            return;
-        }
-        $this->expectException(FormatException::class);
+        $this->expectException(UserAgentParser\Exceptions\FormatException::class);
         new UserAgentParser($product, $version);
     }
 
