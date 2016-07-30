@@ -1,4 +1,11 @@
 <?php
+/**
+ * vipnytt/UserAgentParser
+ *
+ * @link https://github.com/VIPnytt/UserAgentParser
+ * @license https://github.com/VIPnytt/UserAgentParser/blob/master/LICENSE The MIT License (MIT)
+ */
+
 namespace vipnytt\UserAgentParser\Tests;
 
 use vipnytt\UserAgentParser;
@@ -12,6 +19,9 @@ use vipnytt\UserAgentParser\Exceptions\FormatException;
 class InvalidFormatTest extends \PHPUnit_Framework_TestCase
 {
     /**
+     * PHPUnit >= 5.0
+     *
+     * @requires PHPUnit 5
      * @dataProvider generateDataForTest
      * @param string $product
      * @param int|string|null $version
@@ -19,6 +29,19 @@ class InvalidFormatTest extends \PHPUnit_Framework_TestCase
     public function testInvalidFormat($product, $version)
     {
         $this->expectException(FormatException::class);
+        new UserAgentParser($product, $version);
+    }
+
+    /**
+     * PHPUnit >= 4.0
+     *
+     * @dataProvider generateDataForTest
+     * @param string $product
+     * @param int|string|null $version
+     * @expectedException \vipnytt\UserAgentParser\Exceptions\FormatException
+     */
+    public function testInvalidFormatDeprecated($product, $version)
+    {
         new UserAgentParser($product, $version);
     }
 

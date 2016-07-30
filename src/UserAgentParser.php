@@ -1,4 +1,11 @@
 <?php
+/**
+ * vipnytt/UserAgentParser
+ *
+ * @link https://github.com/VIPnytt/UserAgentParser
+ * @license https://github.com/VIPnytt/UserAgentParser/blob/master/LICENSE The MIT License (MIT)
+ */
+
 namespace vipnytt;
 
 use vipnytt\UserAgentParser\Exceptions\FormatException;
@@ -220,6 +227,7 @@ class UserAgentParser
         );
         asort($result);
         usort($result, function ($a, $b) {
+            // PHP 7: Switch to the <=> "Spaceship" operator
             return strlen($b) - strlen($a);
         });
         return $this->filterDuplicates($result);
