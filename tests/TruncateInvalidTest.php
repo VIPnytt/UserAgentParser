@@ -18,20 +18,15 @@ use vipnytt\UserAgentParser;
 class TruncateInvalidTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * PHPUnit >= 5.0
-     *
-     * @requires PHPUnit 5
      * @dataProvider generateDataForTest
      * @param string $product
      * @param int|string|null $version
      */
     public function testTruncateInvalid($product, $version)
     {
-        if (version_compare(\PHPUnit_Runner_Version::id(), '5.2', '>')) {
-            // PHPUnit <= 5.1.x (PHP <= 5.5.x)
-            $this->setExpectedException('\PHPUnit_Framework_Error_Warning');
+        if (version_compare(PHP_VERSION, '5.6.0', '<')) {
+            $this->setExpectedException('PHPUnit_Framework_Error_Warning');
         } else {
-            // PHPUnit >= 5.2.0 (PHP >= 5.6.0)
             $this->expectException(\PHPUnit_Framework_Error_Warning::class);
         }
         new UserAgentParser($product, $version);
