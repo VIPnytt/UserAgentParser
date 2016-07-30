@@ -19,29 +19,19 @@ use vipnytt\UserAgentParser\Exceptions\FormatException;
 class InvalidFormatTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * PHPUnit >= 5.0
-     *
-     * @requires PHPUnit 5
      * @dataProvider generateDataForTest
      * @param string $product
      * @param int|string|null $version
      */
     public function testInvalidFormat($product, $version)
     {
-        $this->expectException(FormatException::class);
-        new UserAgentParser($product, $version);
-    }
-
-    /**
-     * PHPUnit >= 4.0
-     *
-     * @dataProvider generateDataForTest
-     * @param string $product
-     * @param int|string|null $version
-     * @expectedException \vipnytt\UserAgentParser\Exceptions\FormatException
-     */
-    public function testInvalidFormatDeprecated($product, $version)
-    {
+        if (version_compare(\PHPUnit_Runner_Version::id(), '5.2', '<')) {
+            // PHPUnit <= 5.1.x (PHP <= 5.5.x)
+            $this->setExpectedException(FormatException::class);
+        } else {
+            // PHPUnit >= 5.2.0 (PHP >= 5.6.0)
+            $this->expectException(FormatException::class);
+        }
         new UserAgentParser($product, $version);
     }
 

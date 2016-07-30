@@ -27,20 +27,13 @@ class TruncateInvalidTest extends \PHPUnit_Framework_TestCase
      */
     public function testTruncateInvalid($product, $version)
     {
-        $this->expectException(\PHPUnit_Framework_Error_Warning::class);
-        new UserAgentParser($product, $version);
-    }
-
-    /**
-     * PHPUnit >= 4.0
-     *
-     * @dataProvider generateDataForTest
-     * @param string $product
-     * @param int|string|null $version
-     * @expectedException \PHPUnit_Framework_Error_Warning
-     */
-    public function testTruncateInvalidDeprecated($product, $version)
-    {
+        if (version_compare(\PHPUnit_Runner_Version::id(), '5.2', '<')) {
+            // PHPUnit <= 5.1.x (PHP <= 5.5.x)
+            $this->setExpectedException(\PHPUnit_Framework_Error_Warning::class);
+        } else {
+            // PHPUnit >= 5.2.0 (PHP >= 5.6.0)
+            $this->expectException(\PHPUnit_Framework_Error_Warning::class);
+        }
         new UserAgentParser($product, $version);
     }
 
