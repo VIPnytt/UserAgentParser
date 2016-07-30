@@ -24,7 +24,7 @@ class TruncateInvalidTest extends \PHPUnit_Framework_TestCase
      */
     public function testTruncateInvalid($product, $version)
     {
-        if (version_compare(PHP_VERSION, '5.6.0', '<')) {
+        if (PHP_VERSION_ID < 50600) {
             $this->markTestSkipped();
             return;
         }
