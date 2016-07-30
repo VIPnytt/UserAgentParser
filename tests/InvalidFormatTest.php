@@ -26,10 +26,9 @@ class InvalidFormatTest extends \PHPUnit_Framework_TestCase
     public function testInvalidFormat($product, $version)
     {
         if (version_compare(PHP_VERSION, '5.6.0', '<')) {
-            $this->setExpectedException('FormatException');
-        } else {
-            $this->expectException(FormatException::class);
+            $this->markTestSkipped();
         }
+        $this->expectException(FormatException::class);
         new UserAgentParser($product, $version);
     }
 
