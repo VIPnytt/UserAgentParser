@@ -29,7 +29,7 @@ class TruncateInvalidTest extends \PHPUnit_Framework_TestCase
     {
         if (version_compare(\PHPUnit_Runner_Version::id(), '5.2', '>')) {
             // PHPUnit <= 5.1.x (PHP <= 5.5.x)
-            $this->setExpectedException(\PHPUnit_Framework_Error_Warning::class);
+            $this->setExpectedException('\PHPUnit_Framework_Error_Warning');
         } else {
             // PHPUnit >= 5.2.0 (PHP >= 5.6.0)
             $this->expectException(\PHPUnit_Framework_Error_Warning::class);

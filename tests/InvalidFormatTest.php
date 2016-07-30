@@ -27,7 +27,7 @@ class InvalidFormatTest extends \PHPUnit_Framework_TestCase
     {
         if (version_compare(\PHPUnit_Runner_Version::id(), '5.2', '>')) {
             // PHPUnit <= 5.1.x (PHP <= 5.5.x)
-            $this->setExpectedException(FormatException::class);
+            $this->setExpectedException('\vipnytt\UserAgentParser\Exceptions\FormatException');
         } else {
             // PHPUnit >= 5.2.0 (PHP >= 5.6.0)
             $this->expectException(FormatException::class);
