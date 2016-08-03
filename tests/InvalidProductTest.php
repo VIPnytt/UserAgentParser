@@ -11,21 +11,22 @@ namespace vipnytt\UserAgentParser\Tests;
 use vipnytt\UserAgentParser;
 
 /**
- * Class TruncateTest
+ * Class InvalidProductTest
  *
  * @package vipnytt\UserAgentParser\Tests
  */
-class TruncateTest extends \PHPUnit_Framework_TestCase
+class InvalidProductTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * @requires PHPUnit 5.2
      * @dataProvider generateDataForTest
      * @param string $product
+     * @param int|string|null $version
      */
-    public function testTruncate($product)
+    public function testInvalidProduct($product, $version)
     {
-        $this->expectException(\PHPUnit_Framework_Error_Warning::class);
-        new UserAgentParser($product);
+        $this->expectException(UserAgentParser\Exceptions\ProductException::class);
+        new UserAgentParser($product, $version);
     }
 
     /**
@@ -36,10 +37,8 @@ class TruncateTest extends \PHPUnit_Framework_TestCase
     {
         return [
             [
-                'mybot 2.0',
-            ],
-            [
-                'my crawler',
+                '',
+                '2.0',
             ],
         ];
     }

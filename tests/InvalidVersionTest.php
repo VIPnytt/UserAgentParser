@@ -11,11 +11,11 @@ namespace vipnytt\UserAgentParser\Tests;
 use vipnytt\UserAgentParser;
 
 /**
- * Class TruncateInvalidTest
+ * Class InvalidVersionTest
  *
  * @package vipnytt\UserAgentParser\Tests
  */
-class TruncateInvalidTest extends \PHPUnit_Framework_TestCase
+class InvalidVersionTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * @requires PHPUnit 5.2
@@ -23,9 +23,9 @@ class TruncateInvalidTest extends \PHPUnit_Framework_TestCase
      * @param string $product
      * @param int|string|null $version
      */
-    public function testTruncateInvalid($product, $version)
+    public function testInvalidVersion($product, $version)
     {
-        $this->expectException(\PHPUnit_Framework_Error_Warning::class);
+        $this->expectException(UserAgentParser\Exceptions\VersionException::class);
         new UserAgentParser($product, $version);
     }
 
@@ -37,24 +37,20 @@ class TruncateInvalidTest extends \PHPUnit_Framework_TestCase
     {
         return [
             [
-                'MyÇustomWebCrawler',
-                '2.0',
-            ],
-            [
-                'MyCøstomWebCræwler',
-                '2.0',
-            ],
-            [
-                'mybot 2.0',
+                'mybot/2,1',
                 null,
             ],
             [
-                'my crawler',
+                'mycrawler/2.1-beta',
+                '2.1',
+            ],
+            [
+                'mycrawler/2.1alpha1',
                 null,
             ],
             [
-                'æøå',
-                '2.0',
+                'mycrawler',
+                '2.1-alpha.3',
             ],
         ];
     }
