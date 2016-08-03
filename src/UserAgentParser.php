@@ -33,6 +33,12 @@ class UserAgentParser
     const PREG_PATTERN = '/[^\x21-\x7E]/';
 
     /**
+     * Origin product
+     * @var string
+     */
+    private $originProduct;
+
+    /**
      * Product
      * @var string
      */
@@ -86,8 +92,8 @@ class UserAgentParser
     private function validateProduct()
     {
         $this->blacklistCheck($this->product);
-        $old = $this->product;
-        if ($old !== ($this->product = preg_replace(self::PREG_PATTERN, '', $this->product))) {
+        $this->originProduct = $this->product;
+        if ($this->originProduct !== ($this->product = preg_replace(self::PREG_PATTERN, '', $this->product))) {
             trigger_error("Product name contains invalid characters. Truncated to `$this->product`.", E_USER_WARNING);
         }
         if (empty($this->product)) {
@@ -110,7 +116,6 @@ class UserAgentParser
                      'compatible',
                      '(',
                      ')',
-                     ' ',
                  ] as $string) {
             if (stripos($input, $string) !== false) {
                 throw new FormatException('Invalid User-agent format (`' . trim($this->product . '/' . $this->version, '/') . '`). Examples of valid User-agents: `MyCustomBot`, `MyFetcher-news`, `MyCrawler/2.1` and `MyBot-images/1.2`. See also ' . self::RFC_README);
@@ -197,7 +202,7 @@ class UserAgentParser
     /**
      * Get an array of all possible User-agent combinations
      *
-     * @return array
+     * @return string[]
      */
     public function getUserAgents()
     {
@@ -210,7 +215,7 @@ class UserAgentParser
     /**
      * Get versions
      *
-     * @return array
+     * @return int[]|string[]
      */
     public function getVersions()
     {
@@ -238,7 +243,7 @@ class UserAgentParser
      *
      * @param string $string
      * @param string $delimiter
-     * @return array
+     * @return string[]
      */
     private function explode($string, $delimiter)
     {
@@ -253,13 +258,13 @@ class UserAgentParser
      * Filter duplicates from an array
      *
      * @param string[] $array
-     * @return array
+     * @return string[]
      */
     private function filterDuplicates($array)
     {
         $result = [];
         foreach ($array as $value) {
-            if (!in_array($array, $result)) {
+            if (!in_array($value, $result)) {
                 $result[] = $value;
             }
         }
@@ -269,17 +274,16 @@ class UserAgentParser
     /**
      * Get products
      *
-     * @return array
+     * @return string[]
      */
     public function getProducts()
     {
-        $result = array_merge(
-            [
-                $this->product,
-                preg_replace('/[^A-Za-z0-9]/', '', $this->product), // in case of special characters
-            ],
+        return $this->filterDuplicates(array_merge([
+            $this->originProduct,
+            $this->product,
+            preg_replace('/[^A-Za-z0-9]/', '', $this->product), // in case of special characters
+        ],
             $this->explode($this->product, '-')
-        );
-        return $this->filterDuplicates($result);
+        ));
     }
 }

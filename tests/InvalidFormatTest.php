@@ -41,14 +41,6 @@ class InvalidFormatTest extends \PHPUnit_Framework_TestCase
                 null,
             ],
             [
-                'mybot 2.0',
-                null,
-            ],
-            [
-                'my crawler',
-                2,
-            ],
-            [
                 'mycrawler/2.1',
                 '2.1',
             ],
