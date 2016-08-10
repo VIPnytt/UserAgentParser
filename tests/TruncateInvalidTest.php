@@ -25,7 +25,7 @@ class TruncateInvalidTest extends \PHPUnit_Framework_TestCase
      */
     public function testTruncateInvalid($product, $version)
     {
-        $this->expectException(\PHPUnit_Framework_Error_Warning::class);
+        $this->expectException(\PHPUnit_Framework_Error_Notice::class);
         new UserAgentParser($product, $version);
     }
 
