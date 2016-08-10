@@ -143,7 +143,8 @@ class UserAgentParser
         ) {
             throw new VersionException("Invalid version format (` $this->version `). See http://semver.org/ for guidelines. In addition, dev/alpha/beta/rc tags is disallowed. See also " . self::RFC_README);
         }
-        $this->version = trim($this->version, '.0');
+        $new = trim($this->version, '.0');
+        $this->version = empty($new) ? null : $new;
         return true;
     }
 
