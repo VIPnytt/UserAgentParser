@@ -137,11 +137,11 @@ class UserAgentParser
         if (
             !empty($this->version) &&
             (
-                str_replace('+', '', filter_var($this->version, FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION)) ||
+                str_replace('+', '', filter_var($this->version, FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION)) !== $this->version ||
                 version_compare($this->version, '0.0.1', '>=') === false
             )
         ) {
-            throw new VersionException("Invalid version format (` $this->version `). See http://semver.org/ for guidelines. In addition, dev/alpha/beta/rc tags is disallowed. See also " . self::RFC_README);
+            throw new VersionException("Invalid version format (`$this->version`). See http://semver.org/ for guidelines. In addition, dev/alpha/beta/rc tags is disallowed. See also " . self::RFC_README);
         }
         $new = trim($this->version, '.0');
         $this->version = empty($new) ? null : $new;
