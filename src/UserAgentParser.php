@@ -46,7 +46,7 @@ class UserAgentParser
 
     /**
      * Version
-     * @var int|string|null
+     * @var float|int|string|null
      */
     private $version;
 
@@ -54,7 +54,7 @@ class UserAgentParser
      * UserAgentParser constructor
      *
      * @param string $product
-     * @param int|string|null $version
+     * @param float|int|string|null $version
      */
     public function __construct($product, $version = null)
     {
@@ -94,7 +94,7 @@ class UserAgentParser
         $this->blacklistCheck($this->product);
         $this->originProduct = $this->product;
         if ($this->originProduct !== ($this->product = preg_replace(self::PREG_PATTERN, '', $this->product))) {
-            trigger_error("Product name contains invalid characters. Truncated to `$this->product`.", E_USER_WARNING);
+            trigger_error("Product name contains invalid characters. Truncated to `$this->product`.", E_USER_NOTICE);
         }
         if (empty($this->product)) {
             throw new ProductException('Product string cannot be empty.');
@@ -105,7 +105,7 @@ class UserAgentParser
     /**
      * Check for blacklisted strings or characters
      *
-     * @param int|string|null $input
+     * @param float|int|string|null $input
      * @return bool
      * @throws FormatException
      */
@@ -137,7 +137,7 @@ class UserAgentParser
         if (
             !empty($this->version) &&
             (
-                preg_match('/[^0-9.]/', $this->version) ||
+                str_replace('+', '', filter_var($this->version, FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION)) ||
                 version_compare($this->version, '0.0.1', '>=') === false
             )
         ) {
@@ -154,7 +154,9 @@ class UserAgentParser
      */
     public function getUserAgent()
     {
-        return trim($this->getProduct() . '/' . $this->getVersion(), '/');
+        $product = $this->getProduct();
+        $version = $this->getVersion();
+        return $version === null ? $product : $product . '/' . $version;
     }
 
     /**
@@ -170,7 +172,7 @@ class UserAgentParser
     /**
      * Get version
      *
-     * @return string|null
+     * @return float|int|string|null
      */
     public function getVersion()
     {
@@ -215,7 +217,7 @@ class UserAgentParser
     /**
      * Get versions
      *
-     * @return int[]|string[]
+     * @return float[]|int[]|string[]
      */
     public function getVersions()
     {
