@@ -1,7 +1,7 @@
 [![Build Status](https://travis-ci.org/VIPnytt/UserAgentParser.svg?branch=master)](https://travis-ci.org/VIPnytt/UserAgentParser)
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/VIPnytt/UserAgentParser/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/VIPnytt/UserAgentParser/?branch=master)
-[![Code Climate](https://codeclimate.com/github/VIPnytt/UserAgentParser/badges/gpa.svg)](https://codeclimate.com/github/VIPnytt/UserAgentParser)
-[![Test Coverage](https://codeclimate.com/github/VIPnytt/UserAgentParser/badges/coverage.svg)](https://codeclimate.com/github/VIPnytt/UserAgentParser/coverage)
+[![Maintainability](https://api.codeclimate.com/v1/badges/319c474eb3a681c50ba3/maintainability)](https://codeclimate.com/github/VIPnytt/UserAgentParser/maintainability)
+[![Test Coverage](https://api.codeclimate.com/v1/badges/319c474eb3a681c50ba3/test_coverage)](https://codeclimate.com/github/VIPnytt/UserAgentParser/test_coverage)
 [![License](https://poser.pugx.org/VIPnytt/UserAgentParser/license)](https://github.com/VIPnytt/UserAgentParser/blob/master/LICENSE)
 [![Packagist](https://img.shields.io/packagist/v/vipnytt/useragentparser.svg)](https://packagist.org/packages/vipnytt/useragentparser)
 [![Chat](https://badges.gitter.im/VIPnytt/UserAgentParser.svg)](https://gitter.im/VIPnytt/UserAgentParser)
@@ -19,7 +19,7 @@ The library is available for install via [Composer](https://getcomposer.org). Ju
 ```json
 {
     "require": {
-        "vipnytt/useragentparser": "~1.0"
+        "vipnytt/useragentparser": "^1.0"
     }
 }
 ```

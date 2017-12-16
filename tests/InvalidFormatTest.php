@@ -8,6 +8,7 @@
 
 namespace vipnytt\UserAgentParser\Tests;
 
+use PHPUnit\Framework\TestCase;
 use vipnytt\UserAgentParser;
 
 /**
@@ -15,7 +16,7 @@ use vipnytt\UserAgentParser;
  *
  * @package vipnytt\UserAgentParser\Tests
  */
-class InvalidFormatTest extends \PHPUnit_Framework_TestCase
+class InvalidFormatTest extends TestCase
 {
     /**
      * @requires PHPUnit 5.2

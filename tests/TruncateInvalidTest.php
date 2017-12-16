@@ -8,6 +8,7 @@
 
 namespace vipnytt\UserAgentParser\Tests;
 
+use PHPUnit\Framework;
 use vipnytt\UserAgentParser;
 
 /**
@@ -15,17 +16,17 @@ use vipnytt\UserAgentParser;
  *
  * @package vipnytt\UserAgentParser\Tests
  */
-class TruncateInvalidTest extends \PHPUnit_Framework_TestCase
+class TruncateInvalidTest extends Framework\TestCase
 {
     /**
-     * @requires PHPUnit 5.2
+     * @requires PHPUnit 6.0
      * @dataProvider generateDataForTest
      * @param string $product
      * @param int|string|null $version
      */
     public function testTruncateInvalid($product, $version)
     {
-        $this->expectException(\PHPUnit_Framework_Error_Notice::class);
+        $this->expectException(Framework\Error\Notice::class);
         new UserAgentParser($product, $version);
     }
 

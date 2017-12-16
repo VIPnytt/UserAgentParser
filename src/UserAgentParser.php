@@ -8,9 +8,7 @@
 
 namespace vipnytt;
 
-use vipnytt\UserAgentParser\Exceptions\FormatException;
-use vipnytt\UserAgentParser\Exceptions\ProductException;
-use vipnytt\UserAgentParser\Exceptions\VersionException;
+use vipnytt\UserAgentParser\Exceptions;
 
 /**
  * Class UserAgentParser
@@ -87,7 +85,7 @@ class UserAgentParser
      * @link https://tools.ietf.org/html/rfc7230#section-3.2.4
      *
      * @return bool
-     * @throws ProductException
+     * @throws Exceptions\ProductException
      */
     private function validateProduct()
     {
@@ -97,7 +95,7 @@ class UserAgentParser
             trigger_error("Product name contains invalid characters. Truncated to `$this->product`.", E_USER_NOTICE);
         }
         if (empty($this->product)) {
-            throw new ProductException('Product string cannot be empty.');
+            throw new Exceptions\ProductException('Product string cannot be empty.');
         }
         return true;
     }
@@ -107,7 +105,7 @@ class UserAgentParser
      *
      * @param float|int|string|null $input
      * @return bool
-     * @throws FormatException
+     * @throws Exceptions\FormatException
      */
     private function blacklistCheck($input)
     {
@@ -118,7 +116,7 @@ class UserAgentParser
                      ')',
                  ] as $string) {
             if (stripos($input, $string) !== false) {
-                throw new FormatException('Invalid User-agent format (`' . trim($this->product . '/' . $this->version, '/') . '`). Examples of valid User-agents: `MyCustomBot`, `MyFetcher-news`, `MyCrawler/2.1` and `MyBot-images/1.2`. See also ' . self::RFC_README);
+                throw new Exceptions\FormatException('Invalid User-agent format (`' . trim($this->product . '/' . $this->version, '/') . '`). Examples of valid User-agents: `MyCustomBot`, `MyFetcher-news`, `MyCrawler/2.1` and `MyBot-images/1.2`. See also ' . self::RFC_README);
             }
         }
         return true;
@@ -129,7 +127,7 @@ class UserAgentParser
      * @link https://tools.ietf.org/html/rfc7231#section-5.5.3
      *
      * @return bool
-     * @throws VersionException
+     * @throws Exceptions\VersionException
      */
     private function validateVersion()
     {
@@ -140,7 +138,7 @@ class UserAgentParser
                 version_compare($this->version, '0.0.1', '>=') === false
             )
         ) {
-            throw new VersionException("Invalid version format (`$this->version`). See http://semver.org/ for guidelines. In addition, dev/alpha/beta/rc tags is disallowed. See also " . self::RFC_README);
+            throw new Exceptions\VersionException("Invalid version format (`$this->version`). See http://semver.org/ for guidelines. In addition, dev/alpha/beta/rc tags is disallowed. See also " . self::RFC_README);
         }
         $this->version = trim($this->version, '.0');
         return true;

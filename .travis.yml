@@ -1,3 +1,6 @@
+env:
+  global:
+    - CC_TEST_REPORTER_ID=33dec833c8c38b66895abeedd80633f19ad8e08bacf3a2421d1fef5b36ef207f
 sudo: false
 language: php
 php:
@@ -6,11 +9,13 @@ php:
   - 5.6
   - 5.5
   - hhvm
-  - nightly
-matrix:
-  allow_failures:
-    - php: nightly
 install:
   - composer install
+before_script:
+  - curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
+  - chmod +x ./cc-test-reporter
+  - ./cc-test-reporter before-build
+script:
+  - bundle exec rspec
 after_script:
-  - if [[ ! $TRAVIS_PHP_VERSION = 5.5* ]]; then CODECLIMATE_REPO_TOKEN=33dec833c8c38b66895abeedd80633f19ad8e08bacf3a2421d1fef5b36ef207f ./vendor/bin/test-reporter; fi
+  - if [[ $TRAVIS_PHP_VERSION = 7.* ]]; then ./cc-test-reporter after-build --exit-code $TRAVIS_TEST_RESULT; fi

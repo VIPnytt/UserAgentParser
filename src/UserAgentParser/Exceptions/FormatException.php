@@ -13,6 +13,6 @@ namespace vipnytt\UserAgentParser\Exceptions;
  *
  * @package vipnytt\UserAgentParser\Exceptions
  */
-class FormatException extends UserAgentParserException
+class FormatException extends \InvalidArgumentException
 {
 }
