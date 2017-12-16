@@ -19,6 +19,7 @@ use vipnytt\UserAgentParser\Exceptions;
 class ExceptionTest extends TestCase
 {
     /**
+     * @requires PHPUnit 5.2
      * @throws Exceptions\FormatException
      */
     public function testFormat()
@@ -28,6 +29,7 @@ class ExceptionTest extends TestCase
     }
 
     /**
+     * @requires PHPUnit 5.2
      * @throws Exceptions\ProductException
      */
     public function testProduct()
@@ -37,6 +39,7 @@ class ExceptionTest extends TestCase
     }
 
     /**
+     * @requires PHPUnit 5.2
      * @throws Exceptions\VersionException
      */
     public function testVersion()
@@ -46,6 +49,7 @@ class ExceptionTest extends TestCase
     }
 
     /**
+     * @requires PHPUnit 5.2
      * @throws Exceptions\UserAgentParserException
      */
     public function testUserAgentParser()
