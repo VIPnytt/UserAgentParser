@@ -26,11 +26,6 @@ class UserAgentParser
     const RFC_README = 'https://tools.ietf.org/html/rfc7231#section-5.5.3';
 
     /**
-     * PREG pattern for valid characters
-     */
-    const PREG_PATTERN = '/[^\x21-\x7E]/';
-
-    /**
      * Origin product
      * @var string
      */
@@ -91,7 +86,7 @@ class UserAgentParser
     {
         $this->blacklistCheck($this->product);
         $this->originProduct = $this->product;
-        if ($this->originProduct !== ($this->product = preg_replace(self::PREG_PATTERN, '', $this->product))) {
+        if ($this->originProduct !== ($this->product = $this->strip($this->product))) {
             trigger_error("Product name contains invalid characters. Truncated to `$this->product`.", E_USER_NOTICE);
         }
         if (empty($this->product)) {
@@ -120,6 +115,17 @@ class UserAgentParser
             }
         }
         return true;
+    }
+
+    /**
+     * Strip invalid characters
+     *
+     * @param string|string[] $string
+     * @return string|string[]|null
+     */
+    private function strip($string)
+    {
+        return preg_replace('/[^\x21-\x7E]/', '', $string);
     }
 
     /**
@@ -187,7 +193,7 @@ class UserAgentParser
         $array = [];
         foreach ($userAgents as $string) {
             // Strip non-US-ASCII characters
-            $array[$string] = strtolower(preg_replace(self::PREG_PATTERN, '', $string));
+            $array[$string] = strtolower($this->strip($string));
         }
         foreach (array_map('strtolower', $this->getUserAgents()) as $generated) {
             if (($result = array_search($generated, $array)) !== false) {

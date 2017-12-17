@@ -4,7 +4,6 @@
 [![Test Coverage](https://api.codeclimate.com/v1/badges/319c474eb3a681c50ba3/test_coverage)](https://codeclimate.com/github/VIPnytt/UserAgentParser/test_coverage)
 [![License](https://poser.pugx.org/VIPnytt/UserAgentParser/license)](https://github.com/VIPnytt/UserAgentParser/blob/master/LICENSE)
 [![Packagist](https://img.shields.io/packagist/v/vipnytt/useragentparser.svg)](https://packagist.org/packages/vipnytt/useragentparser)
-[![Chat](https://badges.gitter.im/VIPnytt/UserAgentParser.svg)](https://gitter.im/VIPnytt/UserAgentParser)
 
 # User-Agent parser for robot rule sets
 Parser and group determiner optimized for ``robots.txt``, ``X-Robots-tag`` and ``Robots-meta-tag`` usage cases.
@@ -12,7 +11,7 @@ Parser and group determiner optimized for ``robots.txt``, ``X-Robots-tag`` and `
 [![SensioLabsInsight](https://insight.sensiolabs.com/projects/1386c14c-546c-4c42-ac55-91ea3a3a1ae1/big.png)](https://insight.sensiolabs.com/projects/1386c14c-546c-4c42-ac55-91ea3a3a1ae1)
 
 #### Requirements:
-- PHP [5.5+](http://php.net/supported-versions.php)
+- PHP 5.5+ or 7.0+
 
 ## Installation
 The library is available for install via [Composer](https://getcomposer.org). Just add this to your `composer.json` file:
