@@ -237,8 +237,7 @@ class UserAgentParser
         );
         asort($result);
         usort($result, function ($a, $b) {
-            // PHP 7: Switch to the <=> "Spaceship" operator
-            return strlen($b) - strlen($a);
+            return strlen($b) <=> strlen($a);
         });
         return $this->filterDuplicates($result);
     }

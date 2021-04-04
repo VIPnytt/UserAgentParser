@@ -26,7 +26,7 @@ class TruncateInvalidTest extends Framework\TestCase
      */
     public function testTruncateInvalid($product, $version)
     {
-        $this->expectException(Framework\Error\Notice::class);
+        $this->expectNotice();
         new UserAgentParser($product, $version);
     }
 

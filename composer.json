@@ -29,10 +29,10 @@
     }
   ],
   "require": {
-    "php": "^5.5 || ^7.0"
+    "php": "^7.2 || ^8.0"
   },
   "require-dev": {
-    "phpunit/phpunit": "^4.8.35 || ^5.7 || ^6.5"
+    "phpunit/phpunit": "^8.0 || ^9.0"
   },
   "support": {
     "email": "support@vipnytt.no",
