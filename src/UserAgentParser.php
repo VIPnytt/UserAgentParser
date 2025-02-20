@@ -110,7 +110,7 @@ class UserAgentParser
                      '(',
                      ')',
                  ] as $string) {
-            if (stripos($input, $string) !== false) {
+            if (isset($input) && stripos($input, $string) !== false) {
                 throw new Exceptions\FormatException('Invalid User-agent format (`' . trim($this->product . '/' . $this->version, '/') . '`). Examples of valid User-agents: `MyCustomBot`, `MyFetcher-news`, `MyCrawler/2.1` and `MyBot-images/1.2`. See also ' . self::RFC_README);
             }
         }
@@ -137,16 +137,15 @@ class UserAgentParser
      */
     private function validateVersion()
     {
-        $this->blacklistCheck($this->version);
-        if (!empty($this->version) &&
-            (
-                str_replace('+', '', filter_var($this->version, FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION)) !== $this->version ||
-                version_compare($this->version, '0.0.1', '>=') === false
-            )
-        ) {
-            throw new Exceptions\VersionException("Invalid version format (`$this->version`). See http://semver.org/ for guidelines. In addition, dev/alpha/beta/rc tags is disallowed. See also " . self::RFC_README);
+        if (!empty($this->version)) {
+            $this->blacklistCheck($this->version);
+            if (str_replace('+', '', filter_var($this->version, FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION)) !== $this->version
+                || version_compare($this->version, '0.0.1', '>=') === false
+            ) {
+                throw new Exceptions\VersionException("Invalid version format (`$this->version`). See http://semver.org/ for guidelines. In addition, dev/alpha/beta/rc tags is disallowed. See also " . self::RFC_README);
+            }            
+            $this->version = trim($this->version, '.0');
         }
-        $this->version = trim($this->version, '.0');
         return true;
     }
 
