@@ -251,7 +251,7 @@ class UserAgentParser
     private function explode($string, $delimiter)
     {
         $result = [];
-        while (($pos = strrpos($string, $delimiter)) !== false) {
+        while ($string && ($pos = strrpos($string, $delimiter)) !== false) {
             $result[] = ($string = substr($string, 0, $pos));
         }
         return $result;
